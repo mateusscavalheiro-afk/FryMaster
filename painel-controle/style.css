@@ -1,17 +1,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg: #000000; /* RETORNADO PARA PRETO - Fundo geral da página */
-    --panel-bg: #ffffff; /* MANTIDO BRANCO - Fundo do painel */
-    --panel-border: #e0e0e0; /* Bordas cinza claro */
-    --accent: #000000; /* Laranja substituído por Preto */
-    --accent2: #333333; /* Preto um pouco mais claro para efeitos de hover */
-    --text: #000000; /* Textos principais em preto */
-    --muted: #777777; /* Textos secundários em cinza */
-    --item-bg: #f9f9f9; /* Fundo dos botões redondos */
-    --item-hover: #f1f1f1; /* Fundo ao passar o mouse */
-    --selected: #f0f0f0; /* Fundo do item selecionado */
-    --selected-border: #000000; /* Borda do item selecionado */
+    --bg: #000000; /* Fundo geral da página BRANCO */
+    --panel-bg: #000000; /* Fundo do painel PRETO */
+    --panel-border: #333333; /* Bordas cinza escuro para separar os elementos */
+    --accent: #ffffff; /* Cor de destaque (substituindo o laranja) BRANCA */
+    --accent2: #cccccc; /* Branco um pouco mais escuro para efeitos de hover */
+    --text: #ffffff; /* Textos principais em BRANCO */
+    --muted: #aaaaaa; /* Textos secundários em cinza claro */
+    --item-bg: #1a1a1a; /* Fundo dos botões redondos e ícones */
+    --item-hover: #2a2a2a; /* Fundo ao passar o mouse */
+    --selected: #1a1a1a; /* Fundo do item selecionado */
+    --selected-border: #ffffff; /* Borda do item selecionado */
 }
 
 body {
@@ -32,8 +32,8 @@ body {
     border: 1px solid var(--panel-border);
     border-radius: 12px;
     overflow: hidden;
-    /* Ajustado o shadow para aparecer melhor no fundo preto */
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+    /* Shadow suave para dar profundidade sobre o fundo branco */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .panel-header {
@@ -42,7 +42,7 @@ body {
     justify-content: space-between;
     padding: 14px 20px;
     border-bottom: 1px solid var(--panel-border);
-    background: #fafafa;
+    background: #080808; /* Um preto ligeiramente diferente para o cabeçalho */
 }
 
 .panel-brand {
@@ -69,7 +69,7 @@ body {
 
 .tab.active {
     color: var(--accent);
-    background: rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.1);
     border-bottom: 2px solid var(--accent);
 }
 
@@ -127,13 +127,13 @@ body {
 
 .golden-badge.active {
     background: var(--accent);
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    color: #000000; /* Texto preto quando ativo para dar contraste */
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
 .btn-start {
     background: var(--accent);
-    color: #ffffff;
+    color: #000000; /* Texto preto para contrastar com o botão branco */
     font-family: 'Orbitron', sans-serif;
     font-size: 12px;
     font-weight: 700;
@@ -166,7 +166,7 @@ body {
 
 .menu-icon {
     width: 36px; height: 36px;
-    background: #eeeeee;
+    background: var(--item-bg);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
@@ -193,7 +193,7 @@ body {
     max-height: 0;
     transition: max-height 0.4s ease, opacity 0.3s ease;
     opacity: 0;
-    background: #fafafa;
+    background: #080808;
     border-bottom: 1px solid var(--panel-border);
 }
 .specify-panel.open { max-height: 300px; opacity: 1; }
@@ -239,7 +239,7 @@ input[type=range]::-webkit-slider-thumb {
     border-radius: 50%;
     background: var(--accent);
     cursor: pointer;
-    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    box-shadow: 0 0 6px rgba(255,255,255,0.2);
 }
 
 .specify-val {
@@ -264,7 +264,7 @@ input[type=range]::-webkit-slider-thumb {
     transition: all 0.2s;
     margin-top: 4px;
 }
-.btn-apply:hover { background: var(--accent); color: #ffffff; }
+.btn-apply:hover { background: var(--accent); color: #000000; }
 
 /* ── MORE PANEL ── */
 .more-panel {
@@ -284,7 +284,7 @@ input[type=range]::-webkit-slider-thumb {
     border-bottom: 1px solid var(--panel-border);
     cursor: pointer;
     transition: background 0.15s;
-    background: #fafafa;
+    background: #080808;
 }
 .more-item:last-child { border-bottom: none; }
 .more-item:hover { background: var(--item-hover); }
@@ -295,7 +295,7 @@ input[type=range]::-webkit-slider-thumb {
 
 .more-icon {
     width: 34px; height: 34px;
-    background: #eeeeee;
+    background: var(--item-bg);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
@@ -320,7 +320,7 @@ input[type=range]::-webkit-slider-thumb {
     left: 50%;
     transform: translateX(-50%) translateY(60px);
     background: var(--accent);
-    color: #ffffff;
+    color: #000000; /* Texto preto para contrastar com o fundo branco do toast */
     font-family: 'Orbitron', sans-serif;
     font-size: 11px;
     letter-spacing: 1.5px;
