@@ -36,32 +36,19 @@
 
             <div class="metric">
                 <div class="metric-label">FIRMWARE</div>
-                <div class="metric-value" style="font-size:.9rem;color:var(--white-dim);">v2.5-beta</div>
+                <div class="metric-value" style="font-size:.9rem;">v2.4.1_stable</div>
             </div>
         </div>
 
         <div class="center-col">
-
             <button id="btn-power">⏻ &nbsp; LIGAR CÂMERA</button>
 
             <div class="camera-zone" id="camera-zone">
                 <div class="oven-bg"></div>
-                <div class="oven-wall"></div>
-                <div class="lamp left"></div>
-                <div class="lamp right"></div>
-                <div class="cam-module"></div>
-
-                <div class="corner tl"></div>
-                <div class="corner tr"></div>
-                <div class="corner bl"></div>
-                <div class="corner br"></div>
-
                 <div class="scan-line"></div>
-
                 <div class="cam-off-label">
                     <span class="icon">📷</span>
                     <span>CÂMERA DESLIGADA</span>
-                    <span style="font-size:.55rem;color:#333;letter-spacing:2px;">ARRASTE UM ALIMENTO</span>
                 </div>
             </div>
 
@@ -70,27 +57,33 @@
             </div>
 
             <div class="maillard-wrap">
-                <div class="maillard-title">Reação de Maillard — Análise em Tempo Real</div>
+                <div class="maillard-title">Progresso de Maillard (Cor &amp; Crocância)</div>
                 <div class="bar-track">
                     <div class="bar-fill" id="bar-fill"></div>
                 </div>
                 <div class="bar-labels">
-                    <span>CRU</span><span>SELADO</span><span>DOURADO</span><span>PERFEITO</span>
+                    <span>CRU</span>
+                    <span>AQUECENDO</span>
+                    <span>SELADO</span>
+                    <span>DOURADO</span>
+                    <span>PERFEITO</span>
                 </div>
                 <div class="pct-display"><span id="pct-val">0</span>%</div>
             </div>
 
+            <div class="process-controls" id="process-controls" style="display: none;">
+                <button class="btn-pause" id="btn-pause" onclick="togglePause()">PAUSAR</button>
+                <button class="btn-cancel" onclick="cancelProcessManually()">CANCELAR</button>
+            </div>
+
             <div class="food-tray">
-                <div class="food-item" draggable="true" data-name="Frango" data-time="8">
-                    🍗<span class="tag">Frango</span>
+                <div class="food-item" draggable="true" data-name="Hambúrguer" data-time="12">
+                    🍔<span class="tag">Burguer</span>
                 </div>
-                <div class="food-item" draggable="true" data-name="Bife" data-time="10">
-                    🥩<span class="tag">Bife</span>
+                <div class="food-item" draggable="true" data-name="Batata Frita" data-time="8">
+                    🍟<span class="tag">Fritas</span>
                 </div>
-                <div class="food-item" draggable="true" data-name="Batata Frita" data-time="6">
-                    🍟<span class="tag">Batata</span>
-                </div>
-                <div class="food-item" draggable="true" data-name="Peixe" data-time="7">
+                <div class="food-item" draggable="true" data-name="Filé de Peixe" data-time="7">
                     🐟<span class="tag">Peixe</span>
                 </div>
                 <div class="food-item" draggable="true" data-name="Pizza" data-time="5">
