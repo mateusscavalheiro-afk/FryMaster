@@ -20,6 +20,7 @@ let cooking = false;
 let cookTimer = null;
 let cooldownTimer = null;
 let currentTemp = 22;
+let targetTemp = 200;
 
 /* ── LOG HELPER ── */
 function log(msg, cls = '') {
@@ -69,6 +70,7 @@ function resetAll() {
     btnPower.textContent = '⏻   LIGAR CÂMERA';
     btnPower.classList.remove('on');
     cameraZone.classList.remove('active');
+    cameraZone.classList.remove('ready');
 
     const foodEl = cameraZone.querySelector('.food-cooking');
     if (foodEl) foodEl.remove();
@@ -85,6 +87,7 @@ function resetAll() {
     mTurb.textContent = 'IDLE';
     mFood.textContent = '—';
     mConf.textContent = '—';
+    mCor.textContent = '—';
     mTime.textContent = '—';
     confBar.style.width = '0%';
 }
@@ -120,6 +123,7 @@ cameraZone.addEventListener('drop', e => {
 function cookingStart(name, emoji, totalTime) {
     if (cooldownTimer) clearInterval(cooldownTimer);
     cooking = true;
+    cameraZone.classList.remove('ready');
 
     // Visual food
     const foodEl = document.createElement('span');
@@ -130,21 +134,27 @@ function cookingStart(name, emoji, totalTime) {
     // Initial Metrics
     const confianca = 92 + Math.floor(Math.random() * 7);
     mFood.textContent = name;
+    mFood.className = 'metric-value warn';
     mConf.textContent = confianca + '%';
+    mConf.className = 'metric-value warn';
     confBar.style.width = confianca + '%';
     mTurb.textContent = 'MÁXIMA';
     mTurb.className = 'metric-value ok';
+    mCor.textContent = 'CRU';
+    mCor.className = 'metric-value';
 
     log(`Iniciando: ${name}`, 'gold');
 
     let tick = 0;
     
-    // Intervalo de Temperatura (Sobe enquanto cozinha)
+    // Intervalo de Temperatura (Curva de aquecimento realista)
     const tempRise = setInterval(() => {
         if (!cooking) return clearInterval(tempRise);
-        if (currentTemp < 200) {
-            currentTemp += Math.round(Math.random() * 20 + 10);
-            if (currentTemp > 200) currentTemp = 200;
+        if (currentTemp < targetTemp) {
+            // Sobe mais rápido no começo, desacelera perto do fim
+            let step = (targetTemp - currentTemp) * 0.15 + Math.random() * 5;
+            currentTemp += Math.round(step);
+            if (currentTemp > targetTemp) currentTemp = targetTemp;
             mTemp.textContent = currentTemp + ' °C';
             mTemp.className = 'metric-value warn';
         }
@@ -153,10 +163,17 @@ function cookingStart(name, emoji, totalTime) {
     // Intervalo de Maillard (Progresso)
     cookTimer = setInterval(() => {
         tick++;
-        const pct = Math.round((tick / totalTime) * 100);
+        const pct = Math.min(Math.round((tick / totalTime) * 100), 100);
         barFill.style.width = pct + '%';
         pctVal.textContent = pct;
         mTime.textContent = (totalTime - tick) + 's';
+        mTime.className = 'metric-value warn';
+
+        // Atualiza Cor Superficial
+        if (pct < 30) mCor.textContent = 'CRU';
+        else if (pct < 60) mCor.textContent = 'SELADO';
+        else if (pct < 85) mCor.textContent = 'DOURADO';
+        else mCor.textContent = 'PERFEITO';
 
         if (pct >= 100) {
             finishCooking(name);
@@ -167,6 +184,12 @@ function cookingStart(name, emoji, totalTime) {
 function finishCooking(name) {
     clearInterval(cookTimer);
     cooking = false;
+    
+    // Feedback visual turbinado
+    cameraZone.classList.add('ready');
+    mCor.className = 'metric-value ok';
+    mTime.className = 'metric-value ok';
+
     statusBox.style.color = '#7fff7f';
     statusBox.textContent = `> ✅ ${name} PRONTO! Removendo alimento em breve...`;
     
@@ -179,10 +202,16 @@ function removeFood() {
     const foodEl = cameraZone.querySelector('.food-cooking');
     if (foodEl) foodEl.remove();
     
+    cameraZone.classList.remove('ready');
     mFood.textContent = '—';
+    mFood.className = 'metric-value off';
     mConf.textContent = '—';
+    mConf.className = 'metric-value off';
     confBar.style.width = '0%';
+    mCor.textContent = '—';
+    mCor.className = 'metric-value off';
     mTime.textContent = '—';
+    mTime.className = 'metric-value off';
     
     log('Alimento removido. Iniciando resfriamento.', '');
     startCoolDown();
@@ -192,6 +221,7 @@ function cancelProcess() {
     log('PROCESSO CANCELADO', 'red');
     clearInterval(cookTimer);
     cooking = false;
+    cameraZone.classList.remove('ready');
     
     statusBox.style.color = '#ff4444';
     statusBox.textContent = '> [ALERTA] Processo interrompido. Resfriando sistema...';
@@ -206,6 +236,7 @@ function startCoolDown() {
     if (cooldownTimer) clearInterval(cooldownTimer);
     mTurb.textContent = 'VENTILANDO';
     mTurb.className = 'metric-value warn';
+    mCor.textContent = '—';
 
     cooldownTimer = setInterval(() => {
         if (currentTemp > 22 && !cooking) {
