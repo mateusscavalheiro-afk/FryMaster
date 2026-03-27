@@ -209,7 +209,8 @@ body::before {
 .oven-bg,
 .oven-wall,
 .lamp,
-.cam-module {
+.cam-module,
+.food-cooking {
     display: none !important;
 }
 
@@ -554,16 +555,22 @@ body::before {
     text-transform: uppercase;
 }
 
+
 /* ── UPGRADES VISUAIS (DAFT PUNK EDITION) ── */
 
+
 /* Transição suave para todas as métricas */
+
 .metric-value {
     transition: color 0.3s ease;
 }
 
+
 /* Pulso verde na câmera quando o alimento está pronto */
+
 @keyframes pulse-ready {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: inset 0 0 20px rgba(127, 255, 127, 0.2), 0 0 10px rgba(127, 255, 127, 0.4);
         border-color: #7fff7f;
     }
