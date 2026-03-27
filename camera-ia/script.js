@@ -19,6 +19,13 @@
     let cooking = false;
     let cookTimer = null;
 
+    /* ── LOG HELPER ── */
+    function log(msg, cls = '') {
+        const d = new Date();
+        const ts = d.toTimeString().slice(0, 8);
+        console.log(`[${ts}] ${msg}`);
+    }
+
     /* ── POWER ── */
     btnPower.addEventListener('click', () => {
         cameraOn = !cameraOn;
@@ -43,8 +50,10 @@
             let t = 22;
             const tempRise = setInterval(() => {
                 t += Math.round(Math.random() * 12 + 5);
-                if (t >= 200) { t = 200;
-                    clearInterval(tempRise); }
+                if (t >= 200) {
+                    t = 200;
+                    clearInterval(tempRise);
+                }
                 mTemp.textContent = t + ' °C';
             }, 400);
 
@@ -59,8 +68,10 @@
 
     /* ── RESET ── */
     function resetAll() {
-        if (cookTimer) { clearInterval(cookTimer);
-            cookTimer = null; }
+        if (cookTimer) {
+            clearInterval(cookTimer);
+            cookTimer = null;
+        }
         cooking = false;
 
         cameraOn = false;
