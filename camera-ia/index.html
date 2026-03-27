@@ -1,169 +1,138 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FryMaster Vision</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FryMaster Vision</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <!-- HEADER -->
-  <div class="header">
-    <h1>FRYMASTER VISION</h1>
-    <p>Sistema de Visão Computacional &mdash; Maillard AI &mdash; ESP32-CAM</p>
-  </div>
-
-  <!-- DASHBOARD -->
-  <div class="dashboard">
-
-    <!-- LEFT PANEL -->
-    <div class="side-panel">
-      <div class="panel-title">Sistema</div>
-
-      <div class="metric">
-        <div class="metric-label">CÂMERA</div>
-        <div class="metric-value off" id="m-cam">OFFLINE</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">TEMP. INTERNA</div>
-        <div class="metric-value off" id="m-temp">— °C</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">TURBINA</div>
-        <div class="metric-value off" id="m-turb">IDLE</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">FIRMWARE</div>
-        <div class="metric-value" style="font-size:.9rem;color:var(--white-dim);">v2.4.1-beta</div>
-      </div>
+    <div class="header">
+        <h1>FRYMASTER VISION</h1>
+        <p>Sistema de Visão Computacional &mdash; Maillard AI &mdash; ESP32-CAM</p>
     </div>
 
-    <!-- CENTER -->
-    <div class="center-col">
+    <div class="dashboard">
 
-      <button id="btn-power">⏻ &nbsp; LIGAR CÂMERA</button>
+        <div class="side-panel">
+            <div class="panel-title">Sistema</div>
 
-      <!-- CAMERA ZONE -->
-      <div class="camera-zone" id="camera-zone">
-        <!-- oven interior layers -->
-        <div class="oven-bg"></div>
-        <div class="oven-wall"></div>
-        <div class="lamp left"></div>
-        <div class="lamp right"></div>
-        <div class="cam-module"></div>
+            <div class="metric">
+                <div class="metric-label">CÂMERA</div>
+                <div class="metric-value off" id="m-cam">OFFLINE</div>
+            </div>
 
-        <!-- corners -->
-        <div class="corner tl"></div>
-        <div class="corner tr"></div>
-        <div class="corner bl"></div>
-        <div class="corner br"></div>
+            <div class="metric">
+                <div class="metric-label">TEMP. INTERNA</div>
+                <div class="metric-value off" id="m-temp">— °C</div>
+            </div>
 
-        <div class="scan-line"></div>
+            <div class="metric">
+                <div class="metric-label">TURBINA</div>
+                <div class="metric-value off" id="m-turb">IDLE</div>
+            </div>
 
-        <div class="cam-off-label">
-          <span class="icon">📷</span>
-          <span>CÂMERA DESLIGADA</span>
-          <span style="font-size:.55rem;color:#333;letter-spacing:2px;">ARRASTE UM ALIMENTO</span>
+            <div class="metric">
+                <div class="metric-label">FIRMWARE</div>
+                <div class="metric-value" style="font-size:.9rem;color:var(--white-dim);">v2.4.1-beta</div>
+            </div>
         </div>
-      </div>
 
-      <!-- STATUS -->
-      <div class="status-box" id="status-box">
-        &gt; Status: Forno desligado. Aguardando inicialização.
-      </div>
+        <div class="center-col">
 
-      <!-- MAILLARD BAR -->
-      <div class="maillard-wrap">
-        <div class="maillard-title">Reação de Maillard — Análise em Tempo Real</div>
-        <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
-        <div class="bar-labels">
-          <span>CRU</span><span>SELADO</span><span>DOURADO</span><span>PERFEITO</span>
-        </div>
-        <div class="pct-display"><span id="pct-val">0</span>%</div>
-      </div>
+            <button id="btn-power">⏻ &nbsp; LIGAR CÂMERA</button>
 
-      <!-- FOOD TRAY -->
-      <div class="food-tray">
-        <div class="food-item" draggable="true" data-name="Frango" data-time="8">
-          🍗<span class="tag">Frango</span>
+            <div class="camera-zone" id="camera-zone">
+                <div class="oven-bg"></div>
+                <div class="oven-wall"></div>
+                <div class="lamp left"></div>
+                <div class="lamp right"></div>
+                <div class="cam-module"></div>
+
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+
+                <div class="scan-line"></div>
+
+                <div class="cam-off-label">
+                    <span class="icon">📷</span>
+                    <span>CÂMERA DESLIGADA</span>
+                    <span style="font-size:.55rem;color:#333;letter-spacing:2px;">ARRASTE UM ALIMENTO</span>
+                </div>
+            </div>
+
+            <div class="status-box" id="status-box">
+                &gt; Status: Forno desligado. Aguardando inicialização.
+            </div>
+
+            <div class="maillard-wrap">
+                <div class="maillard-title">Reação de Maillard — Análise em Tempo Real</div>
+                <div class="bar-track">
+                    <div class="bar-fill" id="bar-fill"></div>
+                </div>
+                <div class="bar-labels">
+                    <span>CRU</span><span>SELADO</span><span>DOURADO</span><span>PERFEITO</span>
+                </div>
+                <div class="pct-display"><span id="pct-val">0</span>%</div>
+            </div>
+
+            <div class="food-tray">
+                <div class="food-item" draggable="true" data-name="Frango" data-time="8">
+                    🍗<span class="tag">Frango</span>
+                </div>
+                <div class="food-item" draggable="true" data-name="Bife" data-time="10">
+                    🥩<span class="tag">Bife</span>
+                </div>
+                <div class="food-item" draggable="true" data-name="Batata Frita" data-time="6">
+                    🍟<span class="tag">Batata</span>
+                </div>
+                <div class="food-item" draggable="true" data-name="Peixe" data-time="7">
+                    🐟<span class="tag">Peixe</span>
+                </div>
+                <div class="food-item" draggable="true" data-name="Pizza" data-time="5">
+                    🍕<span class="tag">Pizza</span>
+                </div>
+                <div class="food-item" draggable="true" data-name="Linguiça" data-time="9">
+                    🌭<span class="tag">Linguiça</span>
+                </div>
+            </div>
+
         </div>
-        <div class="food-item" draggable="true" data-name="Bife" data-time="10">
-          🥩<span class="tag">Bife</span>
+
+        <div class="side-panel">
+            <div class="panel-title">Análise IA</div>
+
+            <div class="metric">
+                <div class="metric-label">ALIMENTO</div>
+                <div class="metric-value off" id="m-food">—</div>
+            </div>
+
+            <div class="metric">
+                <div class="metric-label">CONFIANÇA</div>
+                <div class="metric-value off" id="m-conf">—</div>
+                <div class="mini-bar-wrap">
+                    <div class="mini-bar" id="conf-bar"></div>
+                </div>
+            </div>
+
+            <div class="metric">
+                <div class="metric-label">COR SUPERFICIAL</div>
+                <div class="metric-value off" id="m-cor">—</div>
+            </div>
+
+            <div class="metric">
+                <div class="metric-label">TEMPO RESTANTE</div>
+                <div class="metric-value off" id="m-time">—</div>
+            </div>
         </div>
-        <div class="food-item" draggable="true" data-name="Batata Frita" data-time="6">
-          🍟<span class="tag">Batata</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Peixe" data-time="7">
-          🐟<span class="tag">Peixe</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Pizza" data-time="5">
-          🍕<span class="tag">Pizza</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Linguiça" data-time="9">
-          🌭<span class="tag">Linguiça</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Camarão" data-time="5">
-          🦐<span class="tag">Camarão</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Costela" data-time="12">
-          🍖<span class="tag">Costela</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Ovo" data-time="4">
-          🍳<span class="tag">Ovo</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Milho" data-time="7">
-          🌽<span class="tag">Milho</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Bacon" data-time="5">
-          🥓<span class="tag">Bacon</span>
-        </div>
-        <div class="food-item" draggable="true" data-name="Hambúrguer" data-time="8">
-          🍔<span class="tag">Hambúrguer</span>
-        </div>
-      </div>
 
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="side-panel">
-      <div class="panel-title">Análise IA</div>
-
-      <div class="metric">
-        <div class="metric-label">ALIMENTO</div>
-        <div class="metric-value off" id="m-food">—</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">CONFIANÇA</div>
-        <div class="metric-value off" id="m-conf">—</div>
-        <div class="mini-bar-wrap"><div class="mini-bar" id="conf-bar"></div></div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">COR SUPERFICIAL</div>
-        <div class="metric-value off" id="m-cor">—</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">TEMPO RESTANTE</div>
-        <div class="metric-value off" id="m-time">—</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- LOG -->
-  <div style="width:100%;max-width:880px;margin-top:14px;">
-    <div class="log-box" id="log-box">
-      <div class="log-line dim">[BOOT] FryMaster Vision v2.4.1-beta inicializado.</div>
-      <div class="log-line dim">[BOOT] ESP32-CAM conectado. IP: 192.168.4.1</div>
-      <div class="log-line dim">[BOOT] Aguardando comando de inicialização...</div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
