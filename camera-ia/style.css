@@ -585,5 +585,60 @@ body::before {
 }
 
 .camera-zone.ready .oven-bg {
-    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(127, 255, 127, 0.15) 0%, transparent 80%), linear-gradient(180deg, #182a18 0%, #101e10 30%, #0c160c 60%, #080e08 100%);
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(127, 255, 127, 0.15) 0%, transparent 80%),
+                linear-gradient(180deg, #182a18 0%, #101e10 30%, #0c160c 60%, #080e08 100%);
+}
+
+/* ── CONTROLES DE AÇÃO (PAUSAR / CANCELAR) ── */
+.process-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.process-controls button {
+    flex: 1;
+    padding: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-pause {
+    background: var(--black-2);
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+}
+
+.btn-pause:hover {
+    background: rgba(201, 168, 76, 0.1);
+    box-shadow: 0 0 10px var(--glow);
+}
+
+.btn-pause.paused-state {
+    background: var(--gold);
+    color: var(--black);
+    animation: pulse-pause 1.5s infinite;
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 68, 68, 0.1);
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+@keyframes pulse-pause {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
 }

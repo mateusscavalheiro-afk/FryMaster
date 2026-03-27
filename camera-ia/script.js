@@ -17,6 +17,7 @@ const confBar = document.getElementById('conf-bar');
 /* ── STATE ── */
 let cameraOn = false;
 let cooking = false;
+let isPaused = false; 
 let cookTimer = null;
 let cooldownTimer = null;
 let currentTemp = 22;
@@ -66,8 +67,11 @@ function resetAll() {
     if (cooldownTimer) clearInterval(cooldownTimer);
 
     cooking = false;
+    isPaused = false;
     cameraOn = false;
     currentTemp = 22;
+
+    document.getElementById('process-controls').style.display = 'none';
 
     btnPower.textContent = '⏻   LIGAR CÂMERA';
     btnPower.classList.remove('on');
@@ -80,6 +84,7 @@ function resetAll() {
     statusBox.style.color = '#9a9080';
     statusBox.textContent = '> Status: Forno desligado.';
 
+    // Reset da barra Maillard
     barFill.style.width = '0%';
     pctVal.textContent = '0';
 
@@ -127,13 +132,17 @@ cameraZone.addEventListener('drop', e => {
 function cookingStart(name, emoji, totalTime) {
     if (cooldownTimer) clearInterval(cooldownTimer);
     cooking = true;
+    isPaused = false;
     cameraZone.classList.remove('ready');
 
-    if (name === 'Frango') {
-        cameraZone.style.backgroundImage = "url('assets/raw_chicken.png')";
-    } else {
-        cameraZone.style.backgroundImage = "url('assets/camera-pov.png')";
-    }
+    // Reset da barra Maillard ao iniciar
+    barFill.style.width = '0%';
+    pctVal.textContent = '0';
+
+    // Exibe botões de pausa e cancelamento
+    document.getElementById('process-controls').style.display = 'flex';
+    document.getElementById('btn-pause').textContent = 'PAUSAR';
+    document.getElementById('btn-pause').classList.remove('paused-state');
 
     // Visual food
     const foodEl = document.createElement('span');
@@ -160,8 +169,9 @@ function cookingStart(name, emoji, totalTime) {
     // Intervalo de Temperatura (Curva de aquecimento realista)
     const tempRise = setInterval(() => {
         if (!cooking) return clearInterval(tempRise);
+        if (isPaused) return; 
+
         if (currentTemp < targetTemp) {
-            // Sobe mais rápido no começo, desacelera perto do fim
             let step = (targetTemp - currentTemp) * 0.15 + Math.random() * 5;
             currentTemp += Math.round(step);
             if (currentTemp > targetTemp) currentTemp = targetTemp;
@@ -172,6 +182,8 @@ function cookingStart(name, emoji, totalTime) {
 
     // Intervalo de Maillard (Progresso)
     cookTimer = setInterval(() => {
+        if (isPaused) return;
+
         tick++;
         const pct = Math.min(Math.round((tick / totalTime) * 100), 100);
         barFill.style.width = pct + '%';
@@ -194,8 +206,10 @@ function cookingStart(name, emoji, totalTime) {
 function finishCooking(name) {
     clearInterval(cookTimer);
     cooking = false;
+    isPaused = false;
+    
+    document.getElementById('process-controls').style.display = 'none';
 
-    // Feedback visual turbinado
     cameraZone.classList.add('ready');
     mCor.className = 'metric-value ok';
     mTime.className = 'metric-value ok';
@@ -226,7 +240,11 @@ function removeFood() {
     mCor.className = 'metric-value off';
     mTime.textContent = '—';
     mTime.className = 'metric-value off';
-
+    
+    // ZERAR MAILLARD QUANDO RETIRAR ALIMENTO
+    barFill.style.width = '0%';
+    pctVal.textContent = '0';
+    
     log('Alimento removido. Iniciando resfriamento.', '');
     startCoolDown();
 
@@ -237,13 +255,19 @@ function cancelProcess() {
     log('PROCESSO CANCELADO', 'red');
     clearInterval(cookTimer);
     cooking = false;
+    isPaused = false;
     cameraZone.classList.remove('ready');
-
+    document.getElementById('process-controls').style.display = 'none';
+    
     statusBox.style.color = '#ff4444';
     statusBox.textContent = '> [ALERTA] Processo interrompido. Resfriando sistema...';
 
     const foodEl = cameraZone.querySelector('.food-cooking');
     if (foodEl) foodEl.remove();
+
+    // ZERAR MAILLARD NO CANCELAMENTO
+    barFill.style.width = '0%';
+    pctVal.textContent = '0';
 
     startCoolDown();
 
@@ -272,4 +296,35 @@ function startCoolDown() {
             clearInterval(cooldownTimer);
         }
     }, 600);
+}
+
+/* ── BOTÕES MANUAIS ── */
+function togglePause() {
+    if (!cooking) return;
+    
+    isPaused = !isPaused;
+    const btnPause = document.getElementById('btn-pause');
+
+    if (isPaused) {
+        btnPause.textContent = 'RETOMAR';
+        btnPause.classList.add('paused-state');
+        statusBox.style.color = '#c9a84c';
+        statusBox.textContent = '> [PAUSADO] O processo de preparo foi suspenso.';
+        mTurb.textContent = 'PAUSADO';
+        mTurb.className = 'metric-value warn';
+        log('Preparo pausado pelo utilizador.', 'gold');
+    } else {
+        btnPause.textContent = 'PAUSAR';
+        btnPause.classList.remove('paused-state');
+        statusBox.style.color = '#f0d080';
+        statusBox.textContent = `> Retomando preparo do alimento...`;
+        mTurb.textContent = 'MÁXIMA';
+        mTurb.className = 'metric-value ok';
+        log('Preparo retomado.', 'green');
+    }
+}
+
+function cancelProcessManually() {
+    if (!cooking) return;
+    cancelProcess();
 }
